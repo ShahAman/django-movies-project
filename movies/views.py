@@ -45,3 +45,7 @@ def add(request):
         return HttpResponseRedirect('/movies')
 
     return render(request, 'movies/add.html')
+
+def delete(request, id):
+    Movie.objects.get(pk=id).delete()
+    return HttpResponseRedirect('/movies')
