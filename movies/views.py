@@ -1,8 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, JsonResponse
 
 from .models import Movie
+from .serializers import MovieSerializer
 
 def movies(request):
     # data = {
@@ -53,3 +54,8 @@ def delete(request, id):
         raise Http404('Movie does not exists')
     movie.delete()
     return HttpResponseRedirect('/movies')
+
+def movie_list(request):
+    movies = Movie.objects.all()
+    serializer = MovieSerializer(movies, many=True)
+    return JsonResponse({"movies" : serializer.data}, safe=False)
